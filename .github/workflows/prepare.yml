@@ -1,1 +1,5 @@
 name: Prepare the builds for a deploy.
+on:
+  push:
+    branches:
+      - main

@@ -1,1 +1,5 @@
 name: Deploy the build to the Google Cloud.
+on:
+  push:
+    branches:
+      - main

@@ -3,3 +3,14 @@ on:
   push:
     branches:
       - main
+
+jobs:
+  my_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checking out our code
+      uses: actions/checkout@main
+    - name: say something
+      run: |
+       echo "A little less conversation"
+       echo "A little more action"

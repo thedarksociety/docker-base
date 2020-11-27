@@ -86,6 +86,9 @@ Developers
 Changelog
 ---------
 
+### [2020-11-27]
+ * Added new tests for GitHub Actions.
+
 ### [2020-11-26]
  * a new image.
  

@@ -3,9 +3,8 @@ on:
   push:
     branches:
       - main
-
 jobs:
-  my_build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - name: Checking out our code
@@ -13,4 +12,4 @@ jobs:
     - name: say something
       run: |
        echo "A little less conversation"
-       echo "A little more action"
+       echo "A little more testing of DEPLOY GOOGLE."

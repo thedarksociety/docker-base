@@ -20,9 +20,9 @@ jobs:
         uses: actions/checkout@main
       - name: Configure the GCP Docker authentication.
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-          with:
-            version: '270.0.0'
-            service_account_key: ${{ secrets.GCR_TOKEN }}
+        with:
+          version: '270.0.0'
+          service_account_key: ${{ secrets.GCR_TOKEN }}
       - run: |
           gcloud auth configure-docker
 

@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - '**'
-env:
-  MESSAGE: 'a test message.'
 
 jobs:
   test:
@@ -13,6 +11,6 @@ jobs:
     steps:
       - name: Checkout source code.
         uses: actions/checkout@main
-      - name: Run a quick test we succeeded.
+      - name: Run a quick test that we succeeded.
         run: |
-          "echo This is ${MESSAGE} for the build action."
+          "echo This is a test message for the build test job."

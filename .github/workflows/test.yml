@@ -1,15 +1,16 @@
-name: Run various tests on those builds.
+name: Test runs for Actions.
+
 on:
   push:
     branches:
-      - main
+      - '**'
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: Checking out our code
-      uses: actions/checkout@main
-    - name: say something
-      run: |
-       echo "A little less conversation"
-       echo "A little more testing TEST."
+      - name: Checkout source code.
+        uses: actions/checkout@main
+      - name: Run a quick test that we succeeded.
+        run: |
+          echo "This is a test message for the build test job."

@@ -88,6 +88,7 @@ Changelog
 
 ### [2020-11-27]
  * Added new tests for GitHub Actions.
+ * Alpine build actions to deploy to Google Container Registry.
 
 ### [2020-11-26]
  * a new image.

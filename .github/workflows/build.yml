@@ -14,16 +14,22 @@ env:
   GIT_REF: ${{ github.ref }}
 jobs:
   config:
-    name: Configuration step of the build [1].
+    name: Configuration step of the build [1.a].
     runs-on: ubuntu-latest
     steps:
       - name: Initial checkout and configuration step.
         uses: actions/checkout@v2
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+  config_sdk:
+    name: Configure the Google Cloud SDK [1.b].
+    needs: config
+    steps:
+      - name: GCP SDK Checkout.
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '270.0.0'
           service_account_key: ${{ secrets.GCR_TOKEN }}
-      - run: |
+      - name: Authenticate Docker w/ Google Cloud.
+        run: |
           gcloud auth configure-docker
   build:
     name: The build of the image configured [2].

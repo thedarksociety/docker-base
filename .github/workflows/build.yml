@@ -31,8 +31,8 @@ jobs:
       - name: Build the image to deploy to the GCR.
         run: |
           export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" "$TAG"/.
+          docker build -t "$REGISTRY_NAME"/darksociety-containers/"$IMAGE_NAME":"$TAG" "$TAG"/.
       - name: Deploy the built image to Google Cloud Registry.
         run: |
           export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-          docker push "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG"
+          docker push "$REGISTRY_NAME"/darksociety-containers/"$IMAGE_NAME":"$TAG"

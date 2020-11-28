@@ -88,10 +88,10 @@ Changelog
 
 ### [2020-11-27]
  * Added new tests for GitHub Actions.
- * Alpine build actions to deploy to Google Container Registry.
+ * Added build actions for deploying to GCR.
 
 ### [2020-11-26]
- * a new image.
+ * New Alpine, Debian, and Python images.
  
 
 Known Issues

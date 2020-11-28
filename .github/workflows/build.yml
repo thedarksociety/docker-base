@@ -1,4 +1,5 @@
 name: Build the code/project assets packages to be deployed.
+
 on:
   push:
     branches:
@@ -8,21 +9,19 @@ on:
       - '!debian/**-*'
       - 'python/*'
       - '!python/**-*'
+
 env:
   REGISTRY_NAME: gcr.io
   IMAGE_NAME: base
   GIT_REF: ${{ github.ref }}
+
 jobs:
-  config:
+
+  build:
     name: Configuration step of the build [1.a].
     runs-on: ubuntu-latest
     steps:
-      - name: Initial checkout and configuration step.
-        uses: actions/checkout@v2
-  config_sdk:
-    name: Configure the Google Cloud SDK [1.b].
-    needs: config
-    steps:
+      - uses: actions/checkout@v2
       - name: GCP SDK Checkout.
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -31,20 +30,10 @@ jobs:
       - name: Authenticate Docker w/ Google Cloud.
         run: |
           gcloud auth configure-docker
-  build:
-    name: The build of the image configured [2].
-    needs: config
-    runs-on: ubuntu-latest
-    steps:
       - name: Build the image to push.
         run: |
           export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
           docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
-  deploy:
-    name: Deploy the image to GCR.
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy the built image to Google Cloud Registry [3].
         run: |
           export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`

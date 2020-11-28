@@ -24,16 +24,14 @@ jobs:
         with:
           project_id: ${{ secrets.CONTAINERS_PROJECT_ID }}
           service_account_key: ${{ secrets.GCR_TOKEN }}
-          export_default_credentials: true
       - name: Run the GCP Docker authenticator.
         run: |
           gcloud auth configure-docker -q
-          echo $GOOGLE_APPLICATION_CREDENTIALS
-#      - name: Build the image to deploy to the GCR.
-#        run: |
-#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-#          docker build -t "$REGISTRY_NAME"/darksociety-containers/"$IMAGE_NAME":"$TAG" "$TAG"/. \
-#      - name: Deploy the built image to Google Cloud Registry.
-#        run: |
-#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-#          docker push "$REGISTRY_NAME"/darksociety-containers/"$IMAGE_NAME":"$TAG"
+      - name: Build the image to deploy to the GCR.
+        run: |
+          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+          docker build -t "$REGISTRY_NAME"/darksociety-containers/"$IMAGE_NAME":"$TAG" "$TAG"/. \
+      - name: Deploy the built image to Google Cloud Registry.
+        run: |
+          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+          docker push "$REGISTRY_NAME"/darksociety-containers/"$IMAGE_NAME":"$TAG"

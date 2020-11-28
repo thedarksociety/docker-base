@@ -3,12 +3,7 @@ name: Build the code/project assets packages to be deployed.
 on:
   push:
     branches:
-      - 'alpine/*'
-      - '!alpine/**-*'
-      - 'debian/*'
-      - '!debian/**-*'
-      - 'python/*'
-      - '!python/**-*'
+      - 'alpine'
 
 env:
   REGISTRY_NAME: gcr.io

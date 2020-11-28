@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'alpine'
+      - 'debian'
+      - 'python'
 
 env:
   REGISTRY_NAME: gcr.io
@@ -11,15 +13,18 @@ env:
   GIT_REF: ${{ github.ref }}
 
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checking out projec source code.
+      - name: Checking out project source code.
         uses: actions/checkout@main
-      - name: Running the second step in the job.
-        run: |
-          echo "A little less conversation"
-          echo "A little more testing of DEPLOY GOOGLE."
+      - name: Configure the GCP Docker authentication.
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+          with:
+            version: '270.0.0'
+            service_account_key: ${{ secrets.GCR_TOKEN }}
+      - run: |
+          gcloud auth configure-docker
 
 #  build:
 #    name: Configuration step of the build [1.a].
@@ -38,6 +43,38 @@ jobs:
 #        run: |
 #          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
 #          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
+#      - name: Deploy the built image to Google Cloud Registry [3].
+#        run: |
+#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+#          docker push "REGISTRY_NAME"/"$IMAGE_NAME":"$TAG"
+
+#jobs:
+#  config:
+#    name: Configuration step of the build [1].
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Initial checkout and configuration step.
+#        uses: actions/checkout@v2
+#      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+#        with:
+#          version: '270.0.0'
+#          service_account_key: ${{ secrets.GCR_TOKEN }}
+#      - run: |
+#          gcloud auth configure-docker
+#  build:
+#    name: The build of the image configured [2].
+#    needs: config
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Build the image to push.
+#        run: |
+#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+#          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
+#  deploy:
+#    name: Deploy the image to GCR.
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
 #      - name: Deploy the built image to Google Cloud Registry [3].
 #        run: |
 #          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`

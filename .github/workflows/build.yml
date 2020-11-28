@@ -16,25 +16,34 @@ env:
   GIT_REF: ${{ github.ref }}
 
 jobs:
-
-  build:
-    name: Configuration step of the build [1.a].
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: GCP SDK Checkout.
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: '270.0.0'
-          service_account_key: ${{ secrets.GCR_TOKEN }}
-      - name: Authenticate Docker w/ Google Cloud.
+      - name: Checking out projec source code.
+        uses: actions/checkout@main
+      - name: Running the second step in the job.
         run: |
-          gcloud auth configure-docker
-      - name: Build the image to push.
-        run: |
-          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
-      - name: Deploy the built image to Google Cloud Registry [3].
-        run: |
-          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-          docker push "REGISTRY_NAME"/"$IMAGE_NAME":"$TAG"
+          echo "A little less conversation"
+          echo "A little more testing of DEPLOY GOOGLE."
+
+#  build:
+#    name: Configuration step of the build [1.a].
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: GCP SDK Checkout.
+#        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+#        with:
+#          version: '270.0.0'
+#          service_account_key: ${{ secrets.GCR_TOKEN }}
+#      - name: Authenticate Docker w/ Google Cloud.
+#        run: |
+#          gcloud auth configure-docker
+#      - name: Build the image to push.
+#        run: |
+#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+#          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
+#      - name: Deploy the built image to Google Cloud Registry [3].
+#        run: |
+#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+#          docker push "REGISTRY_NAME"/"$IMAGE_NAME":"$TAG"

@@ -18,64 +18,20 @@ jobs:
     steps:
       - name: Checking out project source code.
         uses: actions/checkout@main
-      - name: Configure the GCP Docker authentication.
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - name: Setup and configure the Google Cloud SDK.
+        uses: google-github-actions/setup-gcloud@master
         with:
-          version: '270.0.0'
+          project_id: ${{ secrets.PROJECT_ID }}
           service_account_key: ${{ secrets.GCR_TOKEN }}
-      - run: |
+          export_default_credentials: true
+      - name: Run the GCP Docker authenticator.
+        run: |
           gcloud auth configure-docker
-
-#  build:
-#    name: Configuration step of the build [1.a].
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: GCP SDK Checkout.
-#        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-#        with:
-#          version: '270.0.0'
-#          service_account_key: ${{ secrets.GCR_TOKEN }}
-#      - name: Authenticate Docker w/ Google Cloud.
-#        run: |
-#          gcloud auth configure-docker
-#      - name: Build the image to push.
-#        run: |
-#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-#          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
-#      - name: Deploy the built image to Google Cloud Registry [3].
-#        run: |
-#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-#          docker push "REGISTRY_NAME"/"$IMAGE_NAME":"$TAG"
-
-#jobs:
-#  config:
-#    name: Configuration step of the build [1].
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Initial checkout and configuration step.
-#        uses: actions/checkout@v2
-#      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-#        with:
-#          version: '270.0.0'
-#          service_account_key: ${{ secrets.GCR_TOKEN }}
-#      - run: |
-#          gcloud auth configure-docker
-#  build:
-#    name: The build of the image configured [2].
-#    needs: config
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Build the image to push.
-#        run: |
-#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-#          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
-#  deploy:
-#    name: Deploy the image to GCR.
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Deploy the built image to Google Cloud Registry [3].
-#        run: |
-#          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
-#          docker push "REGISTRY_NAME"/"$IMAGE_NAME":"$TAG"
+      - name: Build the image to deploy to the GCR.
+        run: |
+          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+          docker build -t "$REGISTRY_NAME"/tdsp-1/"$IMAGE_NAME":"$TAG" .
+      - name: Deploy the built image to Google Cloud Registry [3].
+        run: |
+          export TAG=`echo $GIT_REF | awk -F/ '{print $NF}'`
+          docker push "REGISTRY_NAME"/"$IMAGE_NAME":"$TAG"

@@ -6,8 +6,8 @@ on:
 env:
   REPOSITORY_NAME: ${{ github.repository }}
   WORKSPACE: ${{ github.workspace }}
-  PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
   REGISTRY_NAME: gcr.io
+  NO_CACHE: true
 
 jobs:
   setup:
@@ -19,6 +19,8 @@ jobs:
       - name: ENV Variable Test [1]
         run: bash ./pre_build.sh
       - name: ENV Variabel Test [2]
+        env:
+          PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
         run: bash ./build.sh
       - name: ENV Variable Test [3]
         run: bash ./release.sh

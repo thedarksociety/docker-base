@@ -13,5 +13,9 @@ set -exuo pipefail
 # Set some script variables.
 # --------------------------------------------------------------------------- #
 if [ -z ${REPOSITORY_NAME:-} ] || [ -z ${PROJECT_ID:-} ]; then
-  echo "There is NO value set for REPOSITORY_NAME/PROJECT_ID."
+   echo "There is NO value set for REPOSITORY_NAME/PROJECT_ID."
+fi
+
+if [ ${NO_CACHE:-} = 'true' ]; then
+    echo "This will built w/o cache"
 fi

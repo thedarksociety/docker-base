@@ -1,5 +1,2 @@
 .DS_Store
 /.idea/
-/.github/workflows/base.yml
-/docker-base/
-tests

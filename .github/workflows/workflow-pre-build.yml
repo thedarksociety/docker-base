@@ -1,4 +1,4 @@
-name: Pre-Build Tests CI
+name: Pre-Build CI
 
 on:
   workflow_dispatch:

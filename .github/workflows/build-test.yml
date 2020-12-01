@@ -1,24 +1,55 @@
-name: CI Build Tests
+# May be counterproductive, but for now creating
+# this base test yaml with a bunch of actions for
+# testing what is possible and what we need.
+name: Build Tests CI
 
+# workflow_dispatch: - manually run a workflow
+# push - push of branches, tags, ignore-*
+# pull_requests - on pull request actions
+# schedule - on a cron schedule (cron: "0,30 * * * *")
 on:
   workflow_dispatch:
 
+# Default vars to test for various build stages.
 env:
-  REPOSITORY_NAME: ${{ github.repository.name }}
+  GIT_REF: ${{ github.ref }}
+  GIT_SHA: ${{ github.sha }}
+  REPOSITORY_NAME: ${{ github.repository }}
   WORKSPACE: ${{ github.workspace }}
-  PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
   REGISTRY_NAME: gcr.io
+  NO_CACHE: true
+  DOCKERFILE: Dockerfile
+  VERSION: 1.3
 
+# Build Actions
+#  - Some may be non-code related (add label, close issue)
+# pre_build - checkout code, pre build actions
+# build - some build actions, test em
+# release - release actions, test em
 jobs:
-  setup:
-    name: Setup Build Tests
+  pre_build:
+    name: Run Pre-Build Job
     runs-on: ubuntu-latest
     steps:
       - name: Code Checkout
         uses: actions/checkout@main
-      - name: ENV Variable Test [1]
+      - name: ENV Variable Test
         run: bash ./pre_build.sh
-      - name: ENV Variabel Test [2]
+  build:
+    name: Run Build Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@main
+      - name: ENV Variable Test
+        env:
+          PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
         run: bash ./build.sh
-      - name: ENV Variable Test [3]
+  release:
+    name: Run Release Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@main
+      - name: ENV Variable Test (Release)
         run: bash ./release.sh

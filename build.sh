@@ -8,10 +8,18 @@
 # Author: Dark Society <developers@darksociety.cloud>
 # Copyright: Copyright (c) 2020, The Dark Society
 
-set -exuo pipefail
+set -eo pipefail
 
 # Set some script variables.
 # --------------------------------------------------------------------------- #
 if [ -z ${REPOSITORY_NAME:-} ] || [ -z ${PROJECT_ID:-} ]; then
-  echo "There is NO value set for REPOSITORY_NAME/PROJECT_ID."
+   echo "There is NO value set for REPOSITORY_NAME/PROJECT_ID."
+fi
+
+if [ ${NO_CACHE:-} = 'true' ]; then
+    echo "This will built w/o cache"
+fi
+
+if [ -z ${DOCKERFILE:-} ]; then
+    echo "There is NO value set for the GIT_REF"
 fi

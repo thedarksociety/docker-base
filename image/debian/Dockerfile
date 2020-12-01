@@ -1,7 +1,6 @@
-ARG DEBIAN_VERSION=bullseye
+ARG DEBIAN_VERSION=buster
 FROM debian:$DEBIAN_VERSION
 
 LABEL \
-    maintainer="Rye Miller" \
-    maintainer="Tiffany Creamer" \
+    maintainer="Dark Society <containers@darksociety.cloud" \
     version="0.1"

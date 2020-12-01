@@ -1,0 +1,19 @@
+name: Pre-Build Tests CI
+
+on:
+  workflow_dispatch:
+
+env:
+  GIT_REF: ${{ github.ref }}
+  GIT_SHA: ${{ github.sha }}
+  WORKSPACE: ${{ github.workspace }}
+
+jobs:
+  pre_build:
+    name: Run Pre-Build Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@main
+      - name: ENV Variable Test
+        run: bash ./pre_build.sh

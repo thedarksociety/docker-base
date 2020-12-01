@@ -8,10 +8,14 @@
 # Author: Dark Society <developers@darksociety.cloud>
 # Copyright: Copyright (c) 2020, The Dark Society
 
-set -exuo pipefail
+set -e
 
 # Set some script variables.
 # --------------------------------------------------------------------------- #
 if [ -z ${REGISTRY_NAME:-} ]; then
   echo "There is NO value set for REGISTRY_NAME."
+fi
+
+if [ -z ${VERSION:-} ]; then
+  echo "There is NO value set for VERSION."
 fi

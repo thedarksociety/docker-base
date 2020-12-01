@@ -1,8 +1,9 @@
-name: Github Actions [Tests]
+name: Github Actions Test
 
 on:
-  schedule:
-    - cron: "0,30 * * * *"
+  workflow_dispatch:
+#  schedule:
+#    - cron: "0,30 * * * *"
 
 env:
   GIT_REF: ${{ github.ref }}

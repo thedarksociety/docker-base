@@ -1,4 +1,4 @@
-name: Build Tests CI
+name: Github Actions Tests
 
 on:
   schedule:

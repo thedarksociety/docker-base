@@ -12,7 +12,7 @@ env:
 
 jobs:
   setup:
-    name: Setup Build Tests ENV [1]
+    name: Setup Build Tests
     runs-on: ubuntu-latest
     steps:
       - name: Code Checkout
@@ -24,9 +24,10 @@ jobs:
           PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
         run: bash ./build.sh
   build:
-    name: Run Build Test ENV
+    name: Run Build Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Code Checkout
+        uses: actions/checkout@main
       - name: ENV Variable Test [3]
         run: bash ./build.sh
-    

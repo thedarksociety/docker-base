@@ -19,10 +19,10 @@ env:
   REGISTRY_NAME: gcr.io
   NO_CACHE: true
   DOCKERFILE: Dockerfile
-  VERSION: 1.0
+  VERSION: 1.3
 
 # Build Actions
-#
+#  - Some may be non-code related (add label, close issue)
 # pre_build - checkout code, pre build actions
 # build - some build actions, test em
 # release - release actions, test em
@@ -36,8 +36,6 @@ jobs:
       - name: ENV Variable Test
         run: bash ./pre_build.sh
       - name: ENV Variable Test
-        env:
-          PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
         run: bash ./pre_build.sh
   build:
     name: Run Build Job
@@ -46,6 +44,8 @@ jobs:
       - name: Code Checkout
         uses: actions/checkout@main
       - name: ENV Variable Test
+        env:
+          PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
         run: bash ./build.sh
   release:
     name: Run Release Job

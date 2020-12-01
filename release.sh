@@ -8,7 +8,7 @@
 # Author: Dark Society <developers@darksociety.cloud>
 # Copyright: Copyright (c) 2020, The Dark Society
 
-set -exuo pipefail
+set -e
 
 # Set some script variables.
 # --------------------------------------------------------------------------- #

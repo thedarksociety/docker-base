@@ -19,3 +19,7 @@ fi
 if [ ${NO_CACHE:-} = 'true' ]; then
     echo "This will built w/o cache"
 fi
+
+if [ -z ${$DOCKERFILE-} ]; then
+    echo "There is NO value set for the GIT_REF"
+fi

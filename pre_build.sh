@@ -13,5 +13,13 @@ set -exuo pipefail
 # Set some script variables.
 # --------------------------------------------------------------------------- #
 if [ -z ${WORKSPACE:-} ]; then
-  echo "There is NO value set for Workspace."
+    echo "There is NO value set for Workspace."
+fi
+
+if [ -z ${$GIT_REF:-} ]; then
+    echo "There is NO value set for the GIT_REF"
+fi
+
+if [ -z ${$GIT_SHA:-} ]; then
+    echo "There is NO value set for the GIT_REF"
 fi

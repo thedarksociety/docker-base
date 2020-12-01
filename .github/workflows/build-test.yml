@@ -1,0 +1,24 @@
+name: CI Build Tests
+
+on:
+  workflow_dispatch:
+
+env:
+  REPOSITORY_NAME: ${{ github.repository.name }}
+  WORKSPACE: ${{ github.workspace }}
+  PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
+  REGISTRY_NAME: gcr.io
+
+jobs:
+  setup:
+    name: Setup Build Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@main
+      - name: ENV Variable Test [1]
+        run: bash ./pre_build.sh
+      - name: ENV Variabel Test [2]
+        run: bash ./build.sh
+      - name: ENV Variable Test [3]
+        run: bash ./release.sh

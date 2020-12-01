@@ -27,7 +27,7 @@ env:
 # build - some build actions, test em
 # release - release actions, test em
 jobs:
-  pre_build:
+  test_pre_build:
     name: Run Pre-Build Job
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@main
       - name: ENV Variable Test
         run: bash ./pre_build.sh
-  build:
+  test_build:
     name: Run Build Job
     runs-on: ubuntu-latest
     steps:
@@ -45,7 +45,7 @@ jobs:
         env:
           PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
         run: bash ./build.sh
-  release:
+  test_release:
     name: Run Release Job
     runs-on: ubuntu-latest
     steps:

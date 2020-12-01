@@ -8,19 +8,25 @@ env:
   WORKSPACE: ${{ github.workspace }}
   REGISTRY_NAME: gcr.io
   NO_CACHE: true
+  PROJECT_ID: test
 
 jobs:
   setup:
-    name: Setup Build Tests
+    name: Setup Build Tests ENV [1]
     runs-on: ubuntu-latest
     steps:
       - name: Code Checkout
         uses: actions/checkout@main
       - name: ENV Variable Test [1]
         run: bash ./pre_build.sh
-      - name: ENV Variabel Test [2]
+      - name: ENV Variable Test [2]
         env:
           PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
         run: bash ./build.sh
+  build:
+    name: Run Build Test ENV
+    runs-on: ubuntu-latest
+    steps:
       - name: ENV Variable Test [3]
-        run: bash ./release.sh
+        run: bash ./build.sh
+    

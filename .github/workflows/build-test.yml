@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  REPOSITORY_NAME: ${{ github.repository.name }}
+  REPOSITORY_NAME: ${{ github.repository }}
   WORKSPACE: ${{ github.workspace }}
   PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
   REGISTRY_NAME: gcr.io

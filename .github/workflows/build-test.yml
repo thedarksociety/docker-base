@@ -35,8 +35,6 @@ jobs:
         uses: actions/checkout@main
       - name: ENV Variable Test
         run: bash ./pre_build.sh
-      - name: ENV Variable Test
-        run: bash ./pre_build.sh
   build:
     name: Run Build Job
     runs-on: ubuntu-latest

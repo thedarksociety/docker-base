@@ -18,7 +18,9 @@ jobs:
     steps:
       - name: Code Checkout
         uses: actions/checkout@main
-      - name: ENV Variable Test
-        env:
-          PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
-        run: bash ./build.sh
+      - name: Run some Compose tests on the images.
+        run: |
+          bash tests.sh
+      - name: Run a quick test that we succeeded.
+        run: |
+          echo "This is a test message for the build test job."

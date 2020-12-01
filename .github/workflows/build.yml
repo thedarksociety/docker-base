@@ -1,0 +1,21 @@
+name: Build CI
+
+on:
+  workflow_dispatch:
+
+env:
+  REPOSITORY_NAME: ${{ github.repository }}
+  NO_CACHE: true
+  DOCKERFILE: Dockerfile
+
+jobs:
+  build:
+    name: Run Build Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@main
+      - name: ENV Variable Test
+        env:
+          PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
+        run: bash ./build.sh

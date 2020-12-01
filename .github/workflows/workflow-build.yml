@@ -1,7 +1,10 @@
 name: Build CI
 
 on:
-  workflow_dispatch:
+  push:
+    ignore-branches:
+      - 'main'
+      - 'develop'
 
 env:
   REPOSITORY_NAME: ${{ github.repository }}

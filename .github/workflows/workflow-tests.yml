@@ -1,4 +1,4 @@
-name: Github Actions Tests
+name: Github Actions [Tests]
 
 on:
   schedule:

@@ -1,4 +1,4 @@
-name: Release [to GCR] CI
+name: Release [GCR]
 
 on:
   workflow_dispatch:
@@ -23,3 +23,5 @@ jobs:
       - name: Run the GCP Docker authenticator.
         run: |
           gcloud auth configure-docker -q
+      - name: ENV Variable Test
+        run: bash ./release.sh

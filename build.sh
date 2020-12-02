@@ -10,16 +10,81 @@
 
 set -eo pipefail
 
-# Set some script variables.
+# Confirm all values are set, services exist, etc. ($$)
 # --------------------------------------------------------------------------- #
+BUILD_DATE=$(date +"%Y-%m-%d::%H:%M:%S")
+GIT_SHA_SHORT=$(git rev-parse --short HEAD)
+
+if [ -z ${PATH:-} ]; then
+    echo "There is NO value set for Workspace. Build failed."
+    exit 1
+fi
+
+if [ -z ${GIT_REF:-} ]; then
+    echo "There is NO value set for the GIT_REF. Build failed."
+    exit 1
+fi
+
+if [ -z ${GIT_SHA:-} ] || [ -z ${GIT_SHA_SHORT:-} ]; then
+    echo "There is NO value set for the GIT_SHA or GIT_SHA_SHORT. Build failed."
+    exit 1
+fi
+
 if [ -z ${REPOSITORY_NAME:-} ] || [ -z ${PROJECT_ID:-} ]; then
-   echo "There is NO value set for REPOSITORY_NAME/PROJECT_ID."
+    echo "There is NO value set for REPOSITORY_NAME or PROJECT_ID. Build failed."
+    exit 1
 fi
 
-if [ ${NO_CACHE:-} = 'true' ]; then
-    echo "This will built w/o cache"
+if [ -z ${REGISTRY_NAME:-} ]; then
+    echo "There is NO value set for REGISTRY_NAME. Build failed."
+    exit 1
 fi
 
-if [ -z ${DOCKERFILE:-} ]; then
-    echo "There is NO value set for the GIT_REF"
+# --cache-from
+if [ ! -z ${NO_CACHE:-} ] && [ ${NO_CACHE:-} = 'true' ]; then
+    CACHE="--no-cache ."
+else
+    CACHE="."
 fi
+
+printf "\n\nSet Outputs\n"
+(
+    set -x
+
+    echo "::set-output name=name::this-is-a-success"
+    echo "::set-output name=version::${REPOSITORY_NAME}"
+)
+
+# Build Test Containers
+# --------------------------------------------------------------------------- #
+IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
+
+printf "\n\nBuilding Alpine Container\n\n"
+(
+    set -x
+    cd image/alpine
+    docker build \
+        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:alpine" \
+        -f Dockerfile \
+        $CACHE
+)
+
+printf "\n\nBuilding Debian Container\n\n"
+(
+    set -x
+    cd image/debian
+    docker build \
+        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:debian" \
+        -f Dockerfile \
+        $CACHE
+)
+
+printf "\n\nBuilding Python Container\n\n"
+(
+    set -x
+    cd image/python
+    docker build \
+        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:python" \
+        -f Dockerfile \
+        $CACHE
+)

@@ -8,20 +8,48 @@ env:
   VERSION: 1.2
 
 jobs:
-  release:
-    name: Run Release Job
+  deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Code Checkout
         uses: actions/checkout@main
-      - name: Setup and configure the Google Cloud SDK.
+      - name: Configure the Google Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
-          project_id: ${{ secrets.CONTAINERS_PROJECT_ID }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCR_TOKEN }}
           export_default_credentials: true
       - name: Run the GCP Docker authenticator.
         run: |
           gcloud auth configure-docker -q
-      - name: ENV Variable Test
+      - name: Build and Deploy Containers
         run: bash ./release.sh
+  release:
+    name: Create Github Release
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body_path: README.md
+          draft: true
+          prerelease: true
+      - name: Expose git commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+      - name: Print git commit data
+        run: |
+          echo "Get author info"
+          echo " - ${{ env.GIT_COMMIT_AUTHOR }}"
+          echo " - ${{ env.GIT_COMMIT_AUTHOR_NAME }}"
+          echo " - ${{ env.GIT_COMMIT_AUTHOR_EMAIL }}"
+          echo "Get committer info"
+          echo " - ${{ env.GIT_COMMIT_COMMITTER }}"
+          echo " - ${{ env.GIT_COMMIT_COMMITTER_NAME }}"
+          echo " - ${{ env.GIT_COMMIT_COMMITTER_EMAIL }}"

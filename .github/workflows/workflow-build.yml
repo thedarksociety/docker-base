@@ -7,18 +7,33 @@ on:
       - 'develop'
 
 env:
+  WORKSPACE: ${{ github.workspace }}
+  GIT_REF: ${{ github.ref }}
+  GIT_SHA: ${{ github.sha }}
   REPOSITORY_NAME: ${{ github.repository }}
+  REGISTRY_NAME: gcr.io
   NO_CACHE: true
-  DOCKERFILE: Dockerfile
+  PROJECT_ID: darksociety-containers
 
 jobs:
   build:
     name: Run Build Job
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+    outputs:
+      name: ${{ steps.build.outputs.name }}
+      version: ${{ steps.build.outputs.version }}
     steps:
       - name: Code Checkout
         uses: actions/checkout@main
-      - name: ENV Variable Test
-        env:
-          PROJECT_ID: ${{ secrets.CONTAINERS_PROJECT_ID }}
+      - name: Build Containers
+        id: build
         run: bash ./build.sh
+  post_build:
+    name: Run Build Output Test
+    runs-on: ubuntu-18.04
+    needs: build
+    steps:
+      - name: Output previous job text.
+        run: |
+          echo ${{ needs.build.outputs.name }}
+          echo ${{ needs.build.outputs.version }}

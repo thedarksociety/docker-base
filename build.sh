@@ -67,7 +67,7 @@ docker_build()
         --build-arg BUILD_DATE="${BUILD_DATE}" \
         -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}" \
         -f Dockerfile \
-        "${CACHE}"
+        $CACHE
 }
 
 printf "\n\nBuilding Alpine Container\n\n"

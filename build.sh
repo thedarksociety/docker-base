@@ -47,7 +47,7 @@ else
     CACHE="."
 fi
 
-printf "\n\n\Set Outputs\n"
+printf "\n\nSet Outputs\n"
 (
     set -x
 
@@ -60,10 +60,12 @@ printf "\n\n\Set Outputs\n"
 
 docker_build()
 {
-    echo $1
     IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
+    VERSION="1.0"
     TAG="${1}"
-    echo  $TAG
+    # echo "${REGISTRY_NAME}/${PROJECT_ID}/ci:${GIT_SHA_SHORT}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
 }
 
 printf "\n\nBuilding Alpine Container\n\n"
@@ -71,33 +73,18 @@ printf "\n\nBuilding Alpine Container\n\n"
     set -x
     cd image/alpine
     docker_build alpine
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:1.0-alpine"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:alpine"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-alpine"
 )
 
 printf "\n\nBuilding Debian Container\n\n"
 (
     set -x
     cd image/debian
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:1.0-debian"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:debian"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-debian"
+    docker_build debian
 )
 
 printf "\n\nBuilding Python Container\n\n"
 (
     set -x
     cd image/python
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:1.0-python"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:python"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-python"
+    docker_build python
 )
-
-docker_build debian

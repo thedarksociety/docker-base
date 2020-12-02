@@ -59,7 +59,7 @@ printf "\n\nBuilding Alpine Container\n\n"
 (
     set -x
     cd image
-    echo $PATH
+    echo $WORKSPACE
     echo $GIT_REF
     echo $GIT_SHA
 )

@@ -53,35 +53,43 @@ printf "\n\n\Set Outputs\n"
 
     echo "::set-output name=name::this-is-a-success"
     echo "::set-output name=version::${REPOSITORY_NAME}"
-
-    IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
 )
 
 # Build Test Containers
 # --------------------------------------------------------------------------- #
+IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
+VERSION=1.0
+TAG=$(pwd | awk -F '/' '{print $NF}')
+
 printf "\n\nBuilding Alpine Container\n\n"
 (
     set -x
-    TAG=alpine
     cd image/alpine
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-${TAG}"
 )
 
 printf "\n\nBuilding Debian Container\n\n"
 (
     set -x
-    TAG=alpine
     cd image/alpine
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-${TAG}"
 )
 
 printf "\n\nBuilding Python Container\n\n"
 (
     set -x
-    TAG=alpine
-    cd image/alpine
+    cd image/python
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-${TAG}"
 )

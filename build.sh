@@ -58,40 +58,36 @@ printf "\n\n\Set Outputs\n"
 # Build Test Containers
 # --------------------------------------------------------------------------- #
 IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
-VERSION=1.0
 
 printf "\n\nBuilding Alpine Container\n\n"
 (
     set -x
-    TAG=$(pwd | awk -F '/' '{print $NF}')
     cd image/alpine
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-${TAG}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:1.0-alpine"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:alpine"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-alpine"
 )
 
 printf "\n\nBuilding Debian Container\n\n"
 (
     set -x
-    TAG=$(pwd | awk -F '/' '{print $NF}')
     cd image/debian
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-${TAG}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:1.0-debian"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:debian"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-debian"
 )
 
 printf "\n\nBuilding Python Container\n\n"
 (
     set -x
-    TAG=$(pwd | awk -F '/' '{print $NF}')
     cd image/python
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-${TAG}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:1.0-python"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:python"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-python"
 )

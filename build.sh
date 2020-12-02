@@ -68,3 +68,23 @@ printf "\n\nBuilding Alpine Container\n\n"
         -f Dockerfile \
         $CACHE
 )
+
+printf "\n\nBuilding Debian Container\n\n"
+(
+    set -x
+    cd image/debian
+    docker build \
+        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:debian" \
+        -f Dockerfile \
+        $CACHE
+)
+
+printf "\n\nBuilding Python Container\n\n"
+(
+    set -x
+    cd image/python
+    docker build \
+        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:python" \
+        -f Dockerfile \
+        $CACHE
+)

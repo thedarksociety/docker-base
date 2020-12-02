@@ -7,8 +7,13 @@ on:
       - 'develop'
 
 env:
+  GIT_REF: ${{ github.ref }}
+  GIT_SHA: ${{ github.sha }}
   REPOSITORY_NAME: ${{ github.repository }}
+  REGISTRY_NAME: gcr.io
+  VERSION: 1.2
   NO_CACHE: true
+  RELEASE: false
   DOCKERFILE: Dockerfile
 
 jobs:
@@ -23,13 +28,10 @@ jobs:
         uses: actions/checkout@main
       - name: Build Containers
         id: build
-        run: |
-          bash ./build.sh
-      - name: Run a quick test that we succeeded.
-        run: |
-          echo "This is a test message for the build test job."
-
-  test_build:
+        env:
+          PROJECT_ID: darksociety-containers
+        run: bash ./build.sh
+  post_build:
     name: Run Build Output Test
     runs-on: ubuntu-latest
     needs: build

@@ -10,49 +10,80 @@
 
 set -eo pipefail
 
-# Set some script variables and run some checks
+# Confirm all values are set, services exist, etc. ($$)
 # --------------------------------------------------------------------------- #
 BUILD_DATE=$(date +"%Y-%m-%d::%H:%M:%S")
-BUILD_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_NAME=$(pwd | awk -F '/' '{print $NF}')
+GIT_SHA_SHORT=$(git rev-parse --short HEAD)
 
-ALPINE="${BUILD_PATH}/image/alpine"
-DEBIAN="${BUILD_PATH}/image/debian"
-PYTHON="${BUILD_PATH}/image/python"
+if [ -z ${PATH:-} ]; then
+    echo "There is NO value set for Workspace. Build failed."
+    exit 1
+fi
 
-IMAGE=$(echo "${BUILD_PATH}" | cut -d "-" -f 2)
+if [ -z ${GIT_REF:-} ]; then
+    echo "There is NO value set for the GIT_REF. Build failed."
+    exit 1
+fi
 
-REF=$(git rev-parse --short HEAD)
+if [ -z ${GIT_SHA:-} ] || [ -z ${GIT_SHA_SHORT:-} ]; then
+    echo "There is NO value set for the GIT_SHA or GIT_SHA_SHORT. Build failed."
+    exit 1
+fi
+
+if [ -z ${REPOSITORY_NAME:-} ] || [ -z ${PROJECT_ID:-} ]; then
+    echo "There is NO value set for REPOSITORY_NAME or PROJECT_ID. Build failed."
+    exit 1
+fi
+
+if [ -z ${REGISTRY_NAME:-} ]; then
+    echo "There is NO value set for REGISTRY_NAME. Build failed."
+    exit 1
+fi
 
 # --cache-from
-if [ ${NO_CACHE:-} = 'true' ]; then
+if [ ! -z ${NO_CACHE:-} ] && [ ${NO_CACHE:-} = 'true' ]; then
     CACHE="--no-cache ."
 else
     CACHE="."
 fi
 
-echo $REGISTRY_NAME
-echo $PROJECT_ID
-echo $BUILD_PATH
-echo $REPOSITORY_NAME
-echo $REPO_NAME
-echo $IMAGE
-echo $BUILD_DATE
-echo $ALPINE
-echo $DEBIAN
-echo $PYTHON
-echo $REF
-echo $GIT_SHA
-echo $GIT_REF
-echo $CACHE
+printf "\n\n\Set Outputs\n"
+(
+    echo "::set-output name=name::this-is-a-success"
+    echo "::set-output name=version::${REPOSITORY_NAME}"
+)
 
-#docker build \
-#    --build-arg DATE=${DATE} \
-#    --build-arg GIT_SHA=${GIT_SHA} \
-#    -t ${REGISTRY_NAME}:
+# Build Test Containers
+# --------------------------------------------------------------------------- #
+printf "\n\nBuilding Alpine Container\n\n"
+(
+    set -x
+    cd image
+    echo $PATH
+    echo $GIT_REF
+    echo $GIT_SHA
+)
 
-if [ ${RELEASE:-} = 'false' ]; then
-    echo "No images are pushed, this is only to build and test."
-else
-    echo "Preparing to push builds."
-fi
+printf "\n\nBuilding Debian Container\n\n"
+(
+    set -x
+    cd image/alpine
+    echo ${REPOSITORY_NAME} | cut -d "-" -f 2
+    echo "${REGISTRY_NAME}"
+    echo "$PROJECT_ID"
+    echo "${REPOSITORY_NAME}"
+    echo $BUILD_DATE
+    echo $CACHE
+)
+
+printf "\n\nBuilding Python Container\n\n"
+(
+    set -x
+    cd image/python
+    echo ${REPOSITORY_NAME} | cut -d "-" -f 2
+    echo "${REGISTRY_NAME}"
+    echo "$PROJECT_ID"
+    echo "${REPOSITORY_NAME}"
+    echo $BUILD_DATE
+    echo $CACHE
+)

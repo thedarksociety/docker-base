@@ -7,14 +7,12 @@ on:
       - 'develop'
 
 env:
+  PATH: ${{ github.workspace }}
   GIT_REF: ${{ github.ref }}
   GIT_SHA: ${{ github.sha }}
   REPOSITORY_NAME: ${{ github.repository }}
   REGISTRY_NAME: gcr.io
-  VERSION: 1.2
   NO_CACHE: true
-  RELEASE: false
-  DOCKERFILE: Dockerfile
 
 jobs:
   build:

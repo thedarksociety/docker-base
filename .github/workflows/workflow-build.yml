@@ -15,12 +15,25 @@ jobs:
   build:
     name: Run Build Job
     runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.build.outputs.name }}
     steps:
       - name: Code Checkout
         uses: actions/checkout@main
-      - name: Run some Compose tests on the images.
+      - name: Build Containers
+        id: build
         run: |
-          bash tests.sh
+          bash ./build.sh
       - name: Run a quick test that we succeeded.
         run: |
           echo "This is a test message for the build test job."
+      - name: Test Script Outputs
+
+  test_build:
+    name: Run Build Output Test
+    runs-on: ubunt-latest
+    needs: build
+    steps:
+      - name: Output previous job text.
+        run: |
+          echo ${{ needs.build.outputs.name }}

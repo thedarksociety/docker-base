@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       name: ${{ steps.build.outputs.name }}
+      version: ${{ steps.build.outputs.version }}
     steps:
       - name: Code Checkout
         uses: actions/checkout@main
@@ -36,3 +37,4 @@ jobs:
       - name: Output previous job text.
         run: |
           echo ${{ needs.build.outputs.name }}
+          echo ${{ needs.build.outputs.version }}

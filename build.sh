@@ -24,7 +24,10 @@ if [ -z ${DOCKERFILE:-} ]; then
     echo "There is NO value set for the GIT_REF"
 fi
 
+TAG=1.2
+
 printf "\n\nSet Outputs\n"
 (
     echo "::set-output name=name::this-is-a-success"
+    echo "::set-output version=version::${TAG}"
 )

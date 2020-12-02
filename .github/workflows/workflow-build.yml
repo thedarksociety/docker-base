@@ -7,12 +7,13 @@ on:
       - 'develop'
 
 env:
-  PATH: ${{ github.workspace }}
+  WORKSPACE: ${{ github.workspace }}
   GIT_REF: ${{ github.ref }}
   GIT_SHA: ${{ github.sha }}
   REPOSITORY_NAME: ${{ github.repository }}
   REGISTRY_NAME: gcr.io
   NO_CACHE: true
+  PROJECT_ID: darksociety-containers
 
 jobs:
   build:
@@ -23,11 +24,9 @@ jobs:
       version: ${{ steps.build.outputs.version }}
     steps:
       - name: Code Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
       - name: Build Containers
         id: build
-        env:
-          PROJECT_ID: darksociety-containers
         run: bash ./build.sh
   post_build:
     name: Run Build Output Test

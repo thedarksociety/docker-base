@@ -57,24 +57,16 @@ printf "\n\nSet Outputs\n"
 
 # Build Test Containers
 # --------------------------------------------------------------------------- #
-
-docker_build()
-{
-    IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
-    TAG="${1}"
-
-    docker build \
-        --build-arg BUILD_DATE="${BUILD_DATE}" \
-        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}" \
-        -f Dockerfile \
-        $CACHE
-}
+IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
 
 printf "\n\nBuilding Alpine Container\n\n"
 (
     set -x
     cd image/alpine
-    docker_build alpine
+    docker build \
+        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:alpine" \
+        -f Dockerfile \
+        $CACHE
 )
 
 printf "\n\nBuilding Debian Container\n\n"

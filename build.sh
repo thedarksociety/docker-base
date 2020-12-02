@@ -61,11 +61,13 @@ printf "\n\nSet Outputs\n"
 docker_build()
 {
     IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
-    VERSION="1.0"
     TAG="${1}"
-    # echo "${REGISTRY_NAME}/${PROJECT_ID}/ci:${GIT_SHA_SHORT}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
-    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
+
+    docker build \
+        --build-arg BUILD_DATE="${BUILD_DATE}" \
+        -t "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}" \
+        -f Dockerfile \
+        "${CACHE}"
 }
 
 printf "\n\nBuilding Alpine Container\n\n"

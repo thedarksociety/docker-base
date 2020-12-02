@@ -59,11 +59,11 @@ printf "\n\n\Set Outputs\n"
 # --------------------------------------------------------------------------- #
 IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
 VERSION=1.0
-TAG=$(pwd | awk -F '/' '{print $NF}')
 
 printf "\n\nBuilding Alpine Container\n\n"
 (
     set -x
+    TAG=$(pwd | awk -F '/' '{print $NF}')
     cd image/alpine
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
@@ -75,7 +75,8 @@ printf "\n\nBuilding Alpine Container\n\n"
 printf "\n\nBuilding Debian Container\n\n"
 (
     set -x
-    cd image/alpine
+    TAG=$(pwd | awk -F '/' '{print $NF}')
+    cd image/debian
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${VERSION}-${TAG}"
@@ -86,6 +87,7 @@ printf "\n\nBuilding Debian Container\n\n"
 printf "\n\nBuilding Python Container\n\n"
 (
     set -x
+    TAG=$(pwd | awk -F '/' '{print $NF}')
     cd image/python
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"

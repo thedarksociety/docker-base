@@ -49,8 +49,12 @@ fi
 
 printf "\n\n\Set Outputs\n"
 (
+    set -x
+
     echo "::set-output name=name::this-is-a-success"
     echo "::set-output name=version::${REPOSITORY_NAME}"
+
+    IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
 )
 
 # Build Test Containers
@@ -58,32 +62,26 @@ printf "\n\n\Set Outputs\n"
 printf "\n\nBuilding Alpine Container\n\n"
 (
     set -x
-    cd image
-    echo $WORKSPACE
-    echo $GIT_REF
-    echo $GIT_SHA
+    TAG=alpine
+    cd image/alpine
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
 )
 
 printf "\n\nBuilding Debian Container\n\n"
 (
     set -x
+    TAG=alpine
     cd image/alpine
-    echo ${REPOSITORY_NAME} | cut -d "-" -f 2
-    echo "${REGISTRY_NAME}"
-    echo "$PROJECT_ID"
-    echo "${REPOSITORY_NAME}"
-    echo $BUILD_DATE
-    echo $CACHE
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
 )
 
 printf "\n\nBuilding Python Container\n\n"
 (
     set -x
-    cd image/python
-    echo ${REPOSITORY_NAME} | cut -d "-" -f 2
-    echo "${REGISTRY_NAME}"
-    echo "$PROJECT_ID"
-    echo "${REPOSITORY_NAME}"
-    echo $BUILD_DATE
-    echo $CACHE
+    TAG=alpine
+    cd image/alpine
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
+    echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${TAG}"
 )

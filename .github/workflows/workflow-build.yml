@@ -17,7 +17,7 @@ env:
 jobs:
   build:
     name: Run Build Job
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     outputs:
       name: ${{ steps.build.outputs.name }}
       version: ${{ steps.build.outputs.version }}

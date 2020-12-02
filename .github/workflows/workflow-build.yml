@@ -27,7 +27,6 @@ jobs:
       - name: Run a quick test that we succeeded.
         run: |
           echo "This is a test message for the build test job."
-      - name: Test Script Outputs
 
   test_build:
     name: Run Build Output Test

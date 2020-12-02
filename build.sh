@@ -57,12 +57,20 @@ printf "\n\n\Set Outputs\n"
 
 # Build Test Containers
 # --------------------------------------------------------------------------- #
-IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
+
+docker_build()
+{
+    echo $1
+    IMAGE=$(echo "${REPOSITORY_NAME}" | cut -d "-" -f 2)
+    TAG="${1}"
+    echo  $TAG
+}
 
 printf "\n\nBuilding Alpine Container\n\n"
 (
     set -x
     cd image/alpine
+    docker_build alpine
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:${GIT_SHA_SHORT}"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:1.0-alpine"
@@ -91,3 +99,5 @@ printf "\n\nBuilding Python Container\n\n"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:python"
     echo "${REGISTRY_NAME}/${PROJECT_ID}/${IMAGE}:dev-python"
 )
+
+docker_build debian

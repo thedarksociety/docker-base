@@ -68,17 +68,3 @@ printf "\n\nBuilding Alpine Container\n\n"
         -f Dockerfile \
         $CACHE
 )
-
-printf "\n\nBuilding Debian Container\n\n"
-(
-    set -x
-    cd image/debian
-    docker_build debian
-)
-
-printf "\n\nBuilding Python Container\n\n"
-(
-    set -x
-    cd image/python
-    docker_build python
-)

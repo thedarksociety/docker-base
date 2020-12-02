@@ -23,7 +23,7 @@ jobs:
       version: ${{ steps.build.outputs.version }}
     steps:
       - name: Code Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
       - name: Build Containers
         id: build
         env:

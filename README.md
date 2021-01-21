@@ -1,11 +1,11 @@
-Base Images
-===========
+Base Images for the DSCR
+========================
 
 ### Description
 
-Base images. Base Image. Bake me a Base Image.
+Alpine, debian, and python base images for extending and customizing personal applications.
 
-> No one reads this shit anyway. 
+> Base images. Base Image. Bake me a Base Image.
 
 
 ## TL;DR
@@ -24,17 +24,20 @@ $ docker run --name base [image]
 Getting Started
 ---------------
 
-Here is some information.
+Placeholder.
+
 
 ### Requirements
 
  * [Git](https://git-scm.org)
  * [Docker](http://docker.io)
- 
+
 
 ### Supported Versions
 
- * [`1.0`, (Dockerfile)](link)
+ * [`alpine`, (Dockerfile)](link)
+ * [`debian`, (Dockerfile)](link)
+ * [`python`, (Dockerfile)](link)
 
 
 Usage
@@ -42,12 +45,16 @@ Usage
 
 ### Features
 
- * One
- * Two
- * THree
+ * Alpine is configured to run my Go projects
+ * Debian is configured to run my PHP, JS projects
+ * Python is configured to run my Python projects
  
  
 ### Pulling the Image
+
+```sh
+$ docker pull gcr.io/darksociety-containers/base:[tag]
+```
 
 
 ### Environment
@@ -65,11 +72,6 @@ Usage
 | docker-entrypoint.sh | Configuration and initiation for the container. |
 | docker-healthcheck.sh |Confirm the container is running and in a health state.|
 
-Resources
----------
-
- * [Developer Standards](https://github.com/GalvanizeOpenSource/developer-standards)
- 
 
 Developers
 ---------
@@ -87,11 +89,15 @@ Changelog
 ---------
 
 ### [2020-11-27]
- * Added new tests for GitHub Actions.
- * Added build actions for deploying to GCR.
+  * Merged the iods/base and thedarksociety/base container repos.
+  * Update the README description information.
+
+### [2020-11-27]
+  * Added new tests for GitHub Actions.
+  * Added build actions for deploying to GCR.
 
 ### [2020-11-26]
- * New Alpine, Debian, and Python images.
+  * New Alpine, Debian, and Python images.
  
 
 Known Issues
@@ -107,7 +113,13 @@ For transparency into the release cycle and in striving to maintain backwards co
 maintained under [the Semantic Versioning Guidelines](http://semver.og).
 
 
+Acknowledgements
+----------------
+
+  * Huge shout out to @tnondairy for always being my support.
+
+
 Copyright
 ---------
 
-Copyright (c) 2020 Rye Miller
+Copyright (c) 2020-2021 Rye Miller
